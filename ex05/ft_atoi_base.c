@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_base.c                                   :+:      :+:    :+:   */
+/*   ft_atoi_base.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rberthau <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/16 09:20:52 by rberthau          #+#    #+#             */
-/*   Updated: 2020/09/16 17:45:28 by rberthau         ###   ########.fr       */
+/*   Created: 2020/09/16 17:23:44 by rberthau          #+#    #+#             */
+/*   Updated: 2020/09/17 00:51:02 by rberthau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
-int	ft_strlen(char *str)
+int	ft_start(char *str, int *k)
 {
 	int i;
 
 	i = 0;
-	while (str[i])
+	while (str[i] == 32 || (str[i] > 8 && str[i] < 14))
+		i++;
+	while (str[i] == '-' || str[i] == '+')
 	{
+		if (str[i] == '-')
+			*k *= -1;
 		i++;
 	}
 	return (i);
-}
-
-void	ft_putchar(char c)
-{
-	write(1, &c, 1);
 }
 
 int	ft_checkbase(char *str)
@@ -35,8 +34,6 @@ int	ft_checkbase(char *str)
 	int j;
 
 	i = 0;
-	if (str[0] == '\0' || str[1] == '\0')
-		return (0);
 	while (str[i])
 	{
 		if (str[i] == '-' || str[i] == '+' || str[i] < 32 || str[i] > 126)
@@ -50,40 +47,55 @@ int	ft_checkbase(char *str)
 		}
 		i++;
 	}
-	return (1);
+	return (i);
 }
 
-void	ft_putnbr_base(int nbr, char *base)
+int ft_checkchar(char *str, char *base)
+{
+	int i;
+
+	i = 0;
+	
+
+
+int	ft_index(char c, char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] != c)
+	{
+		i++;
+	}
+	return (i);
+}
+
+int	ft_atoi_base(char *str, char *base)
 {
 	int i;
 	int blen;
-	
-	i = 0;
-	blen = ft_strlen(base);
-	if (ft_checkbase(base) == 1)
-	{
-		if (nbr < 0)
-		{
-			nbr *= -1;
-			ft_putchar('-');
-		}
-		if (nbr < blen)
-			ft_putchar(base[nbr]);
-		else
-		{
-			ft_putnbr_base(nbr / blen, base);
-			ft_putnbr_base(nbr % blen, base);
-		}
-	}
-}
+	int nb;
+	int k;
 
+	nb = 0;
+	blen = ft_checkbase(base);
+	k = 0;
+	if (ft_checkbase(base) == 0)
+		return(0);
+	i = ft_ft(str, &k);
+	
+	while (str[i] >= 32 && str[i] <= 126)
+		{
+			nb =  nb * blen + ft_index(str[i], base);
+			i++;
+		}
+	return (nb * k);
+}
 
 #include <stdio.h>
 
-int main()
+int main(int argc, char **argv)
 {
-	char base[] = "01";
-	int n = -149405;
-	printf("%d \n \n", ft_checkbase(base));
-	ft_putnbr_base(n, base);
+	printf("%d\n", ft_atoi_base("ab", "abc"));
+	return (0);
 }
